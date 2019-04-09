@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/WigWagCo/maestro-shell",
+	"ImportPath": "github.com/armPelionEdge/maestro-shell",
 	"GoVersion": "go1.9",
 	"GodepVersion": "v79",
 	"Packages": [
