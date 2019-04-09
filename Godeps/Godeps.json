@@ -1,0 +1,37 @@
+{
+	"ImportPath": "github.com/WigWagCo/maestro-shell",
+	"GoVersion": "go1.9",
+	"GodepVersion": "v79",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/c-bata/go-prompt",
+			"Comment": "v0.2.1-33-gde51277",
+			"Rev": "de51277535db236123a9f8f97d03290f62c5f2a6"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-colorable",
+			"Comment": "v0.0.9-14-gefa5899",
+			"Rev": "efa589957cd060542a26d2dd7832fd6a6c6c3ade"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-isatty",
+			"Comment": "v0.0.3-7-g6ca4dbf",
+			"Rev": "6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-tty",
+			"Rev": "931426f7535ac39720c8909d70ece5a41a2502a6"
+		},
+		{
+			"ImportPath": "github.com/pkg/term/termios",
+			"Rev": "b1f72af2d63057363398bec5873d16a98b453312"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "6f686a352de66814cdd080d970febae7767857a3"
+		}
+	]
+}
