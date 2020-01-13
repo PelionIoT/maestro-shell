@@ -235,80 +235,80 @@ func (self *MaestroClient) ConfigNetInterface(args []string) (string, error) {
 		//TODO: netIfConfig.Routes
 		//TODO: netIfConfig.TestHttpsRouteOut
 		//TODO: netIfConfig.TestICMPv4EchoOut
-		switch val[0] {
-		case "IfName":
+		switch strings.ToLower(val[0]) {
+		case "ifname":
 			netIfConfig.IfName = val[1]
-		case "IfIndex":
+		case "ifindex":
 			i, err := strconv.Atoi(val[1])
 			if err != nil {
 				return "Invalid argument", err
 			}
 			netIfConfig.IfIndex = i
-		case "DhcpV4Enabled":
+		case "dhcpv4enabled":
 			b, err := strconv.ParseBool(val[1])
 			if err != nil {
 				return "Invalid argument", err
 			}
 			netIfConfig.DhcpV4Enabled = b
-		case "IPv4Addr":
+		case "ipv4addr":
 			netIfConfig.IPv4Addr = val[1]
-		case "IPv4Mask":
+		case "ipv4mask":
 			i, err := strconv.Atoi(val[1])
 			if err != nil {
 				return "Invalid argument", err
 			}
 			netIfConfig.IPv4Mask = i
-		case "IPv4BCast":
+		case "ipv4bcast":
 			netIfConfig.IPv4BCast = val[1]
-		case "IPv6Addr":
+		case "ipv6addr":
 			netIfConfig.IPv6Addr = val[1]
-		case "HwAddr":
+		case "hwaddr":
 			netIfConfig.IPv6Addr = val[1]
-		case "ReplaceAddress":
+		case "replaceaddress":
 			netIfConfig.ReplaceAddress = val[1]
-		case "ClearAddresses":
+		case "clearaddresses":
 			b, err := strconv.ParseBool(val[1])
 			if err != nil {
 				return "Invalid argument", err
 			}
 			netIfConfig.ClearAddresses = b
-		case "Down":
+		case "down":
 			b, err := strconv.ParseBool(val[1])
 			if err != nil {
 				return "Invalid argument", err
 			}
 			netIfConfig.Down = b
-		case "DefaultGateway":
+		case "defaultgateway":
 			netIfConfig.DefaultGateway = val[1]
-		case "FallbackDefaultGateway":
+		case "fallbackdefaultgateway":
 			netIfConfig.FallbackDefaultGateway = val[1]
-		case "RoutePriority":
+		case "routepriority":
 			i, err := strconv.Atoi(val[1])
 			if err != nil {
 				return "Invalid argument", err
 			}
 			netIfConfig.RoutePriority = i
-		case "Aux":
+		case "aux":
 			b, err := strconv.ParseBool(val[1])
 			if err != nil {
 				return "Invalid argument", err
 			}
 			netIfConfig.Aux = b
-		case "NameserverOverrides":
+		case "nameserveroverrides":
 			netIfConfig.NameserverOverrides = val[1]
-		case "DhcpDisableClearAddresses":
+		case "dhcpdisableclearaddresses":
 			b, err := strconv.ParseBool(val[1])
 			if err != nil {
 				return "Invalid argument", err
 			}
 			netIfConfig.DhcpDisableClearAddresses = b
-		case "DhcpStepTimeout":
+		case "dhcpsteptimeout":
 			i, err := strconv.Atoi(val[1])
 			if err != nil {
 				return "Invalid argument", err
 			}
 			netIfConfig.DhcpStepTimeout = i
-		case "Existing":
+		case "existing":
 			netIfConfig.Existing = val[1]
 		}
 	}
