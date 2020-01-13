@@ -154,10 +154,10 @@ func cmdJobs(args []string) (out string, err error) {
 				fmt.Println(out)
 			}
 		} else {
-			fmt.Printf("%s\n", Errorf("no command: net %s", args[1]))
+			fmt.Printf("%s\n", Errorf("no command: jobs %s", args[1]))
 		}
 	} else {
-		fmt.Printf("%s\n", Errorf("net: not enough args"))
+		fmt.Printf("%s\n", Errorf("jobs: not enough args"))
 	}
 	return
 }
