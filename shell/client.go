@@ -25,6 +25,7 @@ import (
 	"net"
 	"net/http"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/armPelionEdge/maestroSpecs"
@@ -215,13 +216,109 @@ func FormatJsonEasyRead(out bytes.Buffer, rawjson []byte) (outs string, err erro
 }
 
 func (self *MaestroClient) ConfigNetInterface(args []string) (string, error) {
-	type netIfConfig maestroSpecs.NetIfConfigPayload
-	type netIfConfigs []netIfConfig
+	var netIfConfig maestroSpecs.NetIfConfigPayload
 
-	var configs = netIfConfigs{
-		netIfConfig{IfName: "eth0"},
+	// check for addition args beyond "net config-interface"
+	if len(args)-2 <= 0 {
+		return "Incorrect number of opts:", errors.New("Missing interface options")
 	}
 
+	for _, opt := range args[2:] {
+		val := strings.Split(opt, "=")
+		if len(val) < 2 {
+			return "Invalid option", fmt.Errorf("Invalid option: %s", val)
+		}
+		DebugOut("opt=%s, arg=%s", val[0], val[1])
+		//TODO: netIfConfig.AliasAddrV4
+		//TODO: netIfConfig.WiFiSettings
+		//TODO: netIfConfig.IEEE8021x
+		//TODO: netIfConfig.Routes
+		//TODO: netIfConfig.TestHttpsRouteOut
+		//TODO: netIfConfig.TestICMPv4EchoOut
+		switch val[0] {
+		case "IfName":
+			netIfConfig.IfName = val[1]
+		case "IfIndex":
+			i, err := strconv.Atoi(val[1])
+			if err != nil {
+				return "Invalid argument", err
+			}
+			netIfConfig.IfIndex = i
+		case "DhcpV4Enabled":
+			b, err := strconv.ParseBool(val[1])
+			if err != nil {
+				return "Invalid argument", err
+			}
+			netIfConfig.DhcpV4Enabled = b
+		case "IPv4Addr":
+			netIfConfig.IPv4Addr = val[1]
+		case "IPv4Mask":
+			i, err := strconv.Atoi(val[1])
+			if err != nil {
+				return "Invalid argument", err
+			}
+			netIfConfig.IPv4Mask = i
+		case "IPv4BCast":
+			netIfConfig.IPv4BCast = val[1]
+		case "IPv6Addr":
+			netIfConfig.IPv6Addr = val[1]
+		case "HwAddr":
+			netIfConfig.IPv6Addr = val[1]
+		case "ReplaceAddress":
+			netIfConfig.ReplaceAddress = val[1]
+		case "ClearAddresses":
+			b, err := strconv.ParseBool(val[1])
+			if err != nil {
+				return "Invalid argument", err
+			}
+			netIfConfig.ClearAddresses = b
+		case "Down":
+			b, err := strconv.ParseBool(val[1])
+			if err != nil {
+				return "Invalid argument", err
+			}
+			netIfConfig.Down = b
+		case "DefaultGateway":
+			netIfConfig.DefaultGateway = val[1]
+		case "FallbackDefaultGateway":
+			netIfConfig.FallbackDefaultGateway = val[1]
+		case "RoutePriority":
+			i, err := strconv.Atoi(val[1])
+			if err != nil {
+				return "Invalid argument", err
+			}
+			netIfConfig.RoutePriority = i
+		case "Aux":
+			b, err := strconv.ParseBool(val[1])
+			if err != nil {
+				return "Invalid argument", err
+			}
+			netIfConfig.Aux = b
+		case "NameserverOverrides":
+			netIfConfig.NameserverOverrides = val[1]
+		case "DhcpDisableClearAddresses":
+			b, err := strconv.ParseBool(val[1])
+			if err != nil {
+				return "Invalid argument", err
+			}
+			netIfConfig.DhcpDisableClearAddresses = b
+		case "DhcpStepTimeout":
+			i, err := strconv.Atoi(val[1])
+			if err != nil {
+				return "Invalid argument", err
+			}
+			netIfConfig.DhcpStepTimeout = i
+		case "Existing":
+			netIfConfig.Existing = val[1]
+		}
+	}
+
+	if netIfConfig.IfName == "" {
+		return "Missing IfName", errors.New("Missing IfName")
+
+	}
+
+	var configs = []maestroSpecs.NetIfConfigPayload{netIfConfig}
 	bytes, err := json.Marshal(configs)
 	if err != nil {
 		return "Failed to encode to JSON", err
