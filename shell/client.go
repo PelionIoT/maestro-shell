@@ -26,6 +26,8 @@ import (
 	"net/http"
 	"reflect"
 	"strings"
+
+	"github.com/armPelionEdge/maestroSpecs"
 )
 
 type MaestroClient struct {
@@ -62,8 +64,22 @@ func (self *MaestroClient) get(uri string) (resp *http.Response, err error) {
 	return
 }
 
-func (self *MaestroClient) put() {
-
+func (self *MaestroClient) put(uri string, body []byte) (resp *http.Response, err error) {
+	req, err2 := http.NewRequest(http.MethodPut, "http://unix"+uri, bytes.NewReader(body))
+	if err2 != nil {
+		err = err2
+		return
+	}
+	req.Header.Set("Content-Type", "application/json; charset=utf-8")
+	resp, err = self.httpc.Do(req)
+	if err != nil {
+		return
+	}
+	DebugOut("http resp:%+v", resp)
+	if resp == nil {
+		err = errors.New("nil response.")
+	}
+	return
 }
 
 func NewUnixClient(path string) (ret *MaestroClient, err error) {
@@ -196,6 +212,24 @@ func FormatJsonEasyRead(out bytes.Buffer, rawjson []byte) (outs string, err erro
 	outs = out.String()
 
 	return
+}
+
+func (self *MaestroClient) ConfigNetInterface(args []string) (string, error) {
+	type netIfConfig maestroSpecs.NetIfConfigPayload
+	type netIfConfigs []netIfConfig
+
+	var configs = netIfConfigs{
+		netIfConfig{IfName: "eth0"},
+	}
+
+	bytes, err := json.Marshal(configs)
+	if err != nil {
+		return "Failed to encode to JSON", err
+	}
+
+	resp, err2 := self.put("/net/interfaces", bytes)
+
+	return resp.Status, err2
 }
 
 func (self *MaestroClient) GetNetInterfaces() (out string, err error) {
