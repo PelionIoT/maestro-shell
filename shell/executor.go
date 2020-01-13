@@ -245,6 +245,7 @@ var netCommands = map[string]Command{
 	"get-interfaces":   netGetInterfaces,
 	"events":           netEvents,
 	"config-interface": netConfigInterface,
+	"help":             GetNetSubcommandsHelpString,
 }
 
 var jobsCommands = map[string]Command{

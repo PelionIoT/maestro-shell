@@ -42,12 +42,35 @@ var commands = []prompt.Suggest{
 	{Text: "help", Description: "Print available commands."},
 }
 
+var netSubcommands = []prompt.Suggest{
+	//{Text: "get-up-interfaces", Description: "Show configuration interfaces which are up."},
+	//{Text: "get-enabled-interfaces", Description: "Show configuration interfaces which are enabled."},
+	{Text: "get-interfaces", Description: "Show configurations for all interfaces"},
+	//{Text: "renew-dhcp", Description: "Renew DHCP lease for a specific interface"},
+	//{Text: "release-dhcp", Description: "Release DHCP lease for a specific interface"},
+	//{Text: "ifdown", Description: "Shutdown an interface"},
+	//{Text: "ifup", Description: "Bring up an interface"},
+	{Text: "events", Description: "Listen for network events [interval-seconds]"},
+	{Text: "config-interface", Description: "Enter config for an interface"},
+}
+
 func GetCommandsHelpString([]string) (ret string, err error) {
 	buffer := bytes.NewBufferString("Commands:\n")
 	for _, cmd := range commands {
 		buffer.WriteString(fmt.Sprintf("%-15s- %s\n", cmd.Text, cmd.Description))
 	}
 	buffer.WriteString("--\n")
+	ret = string(buffer.Bytes())
+	return
+}
+
+func GetNetSubcommandsHelpString([]string) (ret string, err error) {
+	buffer := bytes.NewBufferString("Net Subcommands:\n")
+	for _, cmd := range netSubcommands {
+		buffer.WriteString(fmt.Sprintf("%-17s- %s\n", cmd.Text, cmd.Description))
+	}
+	buffer.WriteString("--\n")
+	buffer.WriteString("Specify options as <opt>=<arg>, like IfName=eth0")
 	ret = string(buffer.Bytes())
 	return
 }
@@ -153,19 +176,43 @@ func argumentsCompleter(args []string) []prompt.Suggest {
 	switch first {
 	case "net":
 		if len(args) == 2 {
-			subcommands := []prompt.Suggest{
-				{Text: "get-up-interfaces", Description: "Show configuration interfaces which are up."},
-				{Text: "get-enabled-interfaces", Description: "Show configuration interfaces which are enabled."},
-				{Text: "get-interfaces", Description: "Show configurations for all interfaces"},
-				{Text: "renew-dhcp", Description: "Renew DHCP lease for a specific interface"},
-				{Text: "release-dhcp", Description: "Release DHCP lease for a specific interface"},
-				{Text: "ifdown", Description: "Shutdown an interface"},
-				{Text: "ifup", Description: "Bring up an interface"},
-				{Text: "events", Description: "Listen for network events [interval-seconds]"},
-				{Text: "config-interface", Description: "Enter config mode for an interface"},
-			}
-			return prompt.FilterHasPrefix(subcommands, second, true)
+			return prompt.FilterHasPrefix(netSubcommands, second, true)
 		}
+
+		if len(args) >= 3 {
+			last := args[len(args)-1]
+			switch second {
+			case "config-interface":
+				iface_args := []prompt.Suggest{
+					{Text: "IfName", Description: "Interface name, like eth0"},
+					{Text: "DhcpV4Enabled", Description: "true or false"},
+					{Text: "IPv4Addr", Description: "IPv4 Address"},
+					{Text: "IPv4Mask", Description: "IPv4 Netmask integer (CIDR format)"},
+					{Text: "IPv4BCast", Description: "IPv4 Broadcast Address"},
+					//{Text: "AliasAddrV4", Description: "NOT IMPLEMENTED"},
+					{Text: "IPv6Addr", Description: "IPv6 Address"},
+					{Text: "HwAddr", Description: "MAC Address or similar"},
+					//{Text: "WiFiSettings", Description: "NOT IMPLEMENTED"},
+					//{Text: "IEEE8021x", Description: "NOT IMPLEMENTED"},
+					{Text: "ReplaceAddress", Description: "Address to delete before setting the new address"},
+					{Text: "ClearAddresses", Description: "true or false.  if true, remove all existing addresses before setting the new address"},
+					{Text: "Down", Description: "true or false.  if true, the interface is disabled"},
+					{Text: "DefaultGateway", Description: "Default route associated with this interface"},
+					//{Text: "FallbackDefaultGateway", Description: "NOT IMPLEMENTED"},
+					{Text: "RoutePriority", Description: "Interface priority as a default route, ranked across all interfaces.  range 0-9, 0=first priority, 9=last"},
+					{Text: "Aux", Description: "true or false"},
+					{Text: "NameserverOverrides", Description: "Override DNS"},
+					//{Text: "Routes", Description: "NOT IMPLEMENTED"},
+					//{Text: "TestHttpsRouteOut", Description: "NOT IMPLEMENTED"},
+					//{Text: "TestICMPv4EchoOut", Description: "NOT IMPLEMENTED"},
+					{Text: "DhcpDisableClearAddresses", Description: "Don't allow DHCP to clear all addresses"},
+					{Text: "DhcpStepTimeout", Description: "Max seconds to wait for DHCP address"},
+					{Text: "Existing", Description: "override=replace any data in the db, replace=remove any data in the db"},
+				}
+				return prompt.FilterHasPrefix(iface_args, last, true)
+			}
+		}
+
 	case "debug":
 		if len(args) == 2 {
 			subcommands := []prompt.Suggest{
