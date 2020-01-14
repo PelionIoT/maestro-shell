@@ -48,8 +48,6 @@ Example
 }
 ```
 
-### Commands
-
 #### `net get-interfaces`
 Dumps information on all managed interfaces.
 
@@ -75,4 +73,15 @@ Example
         existing: ""
         ipv4_bcast: ""
 . . .
+```
+
+#### `net config-interface`
+Configures a single existing managed interface.
+
+Usage: `net config-interface <opt1>=<arg1> <opt2>=<arg2> ...`
+
+Example
+```
+> net config-interface ifname=eth1 dhcpv4enabled=false ipv4addr=192.168.1.1 ipv4mask=24 clearaddresses=true
+[OK] 200 OK
 ```
