@@ -1,6 +1,6 @@
 {
 	"ImportPath": "github.com/armPelionEdge/maestro-shell",
-	"GoVersion": "go1.9",
+	"GoVersion": "go1.11",
 	"GodepVersion": "v80",
 	"Packages": [
 		"./..."
@@ -43,8 +43,16 @@
 			"Rev": "b1f72af2d63057363398bec5873d16a98b453312"
 		},
 		{
+			"ImportPath": "github.com/armPelionEdge/greasego",
+			"Rev": "5b578dd9578b693c0938392a8cb4efbe76ec3918"
+		},
+		{
 			"ImportPath": "golang.org/x/sys/unix",
 			"Rev": "6f686a352de66814cdd080d970febae7767857a3"
+		},
+		{
+			"ImportPath": "github.com/armPelionEdge/greasego",
+			"Rev": "5b578dd9578b693c0938392a8cb4efbe76ec3918"
 		}
 	]
 }
