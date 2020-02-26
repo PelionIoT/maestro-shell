@@ -38,8 +38,14 @@ var commands = []prompt.Suggest{
 	{Text: "alive", Description: "Check if maestro is running & get up time"},
 	{Text: "debug", Description: "Turn on / off debug print outs"},
 	{Text: "net", Description: "Query or change network interfaces"},
+	{Text: "log", Description: "Query or change logging parameters"},
 	{Text: "jobs", Description: "Query or change job configs"},
 	{Text: "help", Description: "Print available commands."},
+}
+
+var logSubCommands = []prompt.Suggest{
+	{Text: "get", Description: "Show configurations for all logging targets"},
+	{Text: "set", Description: "Set configurations for a logging target"},
 }
 
 var netSubcommands = []prompt.Suggest{
@@ -71,6 +77,17 @@ func GetNetSubcommandsHelpString([]string) (ret string, err error) {
 	}
 	buffer.WriteString("--\n")
 	buffer.WriteString("Specify options as <opt>=<arg>, like IfName=eth0")
+	ret = string(buffer.Bytes())
+	return
+}
+
+func GetLogSubcommandsHelpString([]string) (ret string, err error) {
+	buffer := bytes.NewBufferString("Log Subcommands:\n")
+	for _, cmd := range logSubCommands {
+		buffer.WriteString(fmt.Sprintf("%-17s- %s\n", cmd.Text, cmd.Description))
+	}
+	buffer.WriteString("--\n")
+	buffer.WriteString("Specify options as <opt>=<arg>, like target=id")
 	ret = string(buffer.Bytes())
 	return
 }
@@ -213,6 +230,26 @@ func argumentsCompleter(args []string) []prompt.Suggest {
 			}
 		}
 
+	case "log":
+		if len(args) == 2 {
+			return prompt.FilterHasPrefix(logSubCommands, second, true)
+		}
+
+		if len(args) >= 3 {
+			last := args[len(args)-1]
+			switch second {
+			case "set":
+				log_set_args := []prompt.Suggest{
+					{Text: "target", Description: "Log filter target"},
+					{Text: "levels", Description: "Log filter level"},
+					{Text: "tag", Description: "Log filter tag"},
+					{Text: "pre", Description: "Log pre filter"},
+					{Text: "post", Description: "Log post filter"},
+					{Text: "post-fmt-pre-msg", Description: "Log post format pre message"},
+				}
+				return prompt.FilterHasPrefix(log_set_args, last, true)
+			}
+		}
 	case "debug":
 		if len(args) == 2 {
 			subcommands := []prompt.Suggest{
