@@ -46,6 +46,7 @@ var commands = []prompt.Suggest{
 var logSubCommands = []prompt.Suggest{
 	{Text: "get", Description: "Show configurations for all logging targets"},
 	{Text: "set", Description: "Set configurations for a logging target"},
+	{Text: "delete", Description: "Delete a configuration for a logging target"},
 }
 
 var netSubcommands = []prompt.Suggest{
@@ -238,7 +239,7 @@ func argumentsCompleter(args []string) []prompt.Suggest {
 		if len(args) >= 3 {
 			last := args[len(args)-1]
 			switch second {
-			case "set":
+			case "set", "delete":
 				log_set_args := []prompt.Suggest{
 					{Text: "target", Description: "Log filter target"},
 					{Text: "levels", Description: "Log filter level"},

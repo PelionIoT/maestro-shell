@@ -97,6 +97,24 @@ func (self *MaestroClient) put(uri string, body []byte) (resp *http.Response, er
 	return
 }
 
+func (self *MaestroClient) delete(uri string, body []byte) (resp *http.Response, err error) {
+	req, err2 := http.NewRequest(http.MethodDelete, "http://unix"+uri, bytes.NewReader(body))
+	if err2 != nil {
+		err = err2
+		return
+	}
+	req.Header.Set("Content-Type", "application/json; charset=utf-8")
+	resp, err = self.httpc.Do(req)
+	if err != nil {
+		return
+	}
+	DebugOut("http resp:%+v", resp)
+	if resp == nil {
+		err = errors.New("nil response.")
+	}
+	return
+}
+
 func NewUnixClient(path string) (ret *MaestroClient, err error) {
 	ret = new(MaestroClient)
 	// ret.netEventsIntervalSeconds = time.Duration(defaultNetEventsListenTimeoutSeconds) * time.Second
@@ -297,6 +315,52 @@ func (self *MaestroClient) GetLogging() (out string, err error) {
 		}
 	}
 	return
+}
+
+func (self *MaestroClient) DeleteLogging(args []string) (string, error) {
+	// the struct to send to maestro
+	var logfilter = new(maestroSpecs.LogFilter)
+
+	// we need parameters
+	if len(args)-2 <= 0 {
+		return "Incorrect number of opts:", errors.New("Missing interface options")
+	}
+
+	// walk the parameters and populate the struct with them
+	for _, opt := range args[2:] {
+		val := strings.Split(opt, "=")
+		if len(val) < 2 {
+			return "Invalid option", fmt.Errorf("Invalid option: %s", val)
+		}
+		DebugOut("opt=%s, arg=%s", val[0], val[1])
+
+		switch strings.ToLower(val[0]) {
+		case "target":
+			logfilter.Target = val[1]
+		case "levels":
+			logfilter.Levels = val[1]
+		case "tag":
+			logfilter.Tag = val[1]
+		case "pre":
+			logfilter.Pre = val[1]
+		case "post":
+			logfilter.Post = val[1]
+		case "post-fmt-pre-msg":
+			logfilter.PostFmtPreMsg = val[1]
+		}
+	}
+
+	//var bytes = []byte("byte array")
+	bytes, err := json.Marshal(logfilter)
+	if err != nil {
+		return "Failed to encode to JSON", err
+	}
+
+	fmt.Printf("Log Sending: %s\n", bytes)
+
+	resp, err2 := self.delete("/log/filter", bytes)
+
+	return resp.Status, err2
 }
 
 func (self *MaestroClient) ConfigNetInterface(args []string) (string, error) {
