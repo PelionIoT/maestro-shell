@@ -228,6 +228,21 @@ func logGet(args []string) (out string, err error) {
 	return
 }
 
+func logDelete(args []string) (out string, err error) {
+	if defaultClient != nil {
+		res, err2 := defaultClient.DeleteLogging(args)
+		DebugOut("log delete:%+v %+v", res, err2)
+		if err2 == nil {
+			out = Successf("%v", res)
+		} else {
+			err = err2
+		}
+	} else {
+		err = errors_no_client
+	}
+	return
+}
+
 func netGetInterfaces(args []string) (out string, err error) {
 	if defaultClient != nil {
 		res, err2 := defaultClient.GetNetInterfaces()
@@ -294,9 +309,10 @@ var commandMap = map[string]Command{
 }
 
 var logCommands = map[string]Command{
-	"get":	logGet,
-	"set":	logSet,
-	"help":	GetLogSubcommandsHelpString,
+	"get":		logGet,
+	"set":		logSet,
+	"delete":	logDelete,
+	"help":		GetLogSubcommandsHelpString,
 }
 
 var netCommands = map[string]Command{
