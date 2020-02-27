@@ -49,8 +49,22 @@ const (
 	defaultHttpTimeoutSeconds = 30 // seconds
 )
 
-func (self *MaestroClient) post() {
-
+func (self *MaestroClient) post(uri string, body []byte) (resp *http.Response, err error) {
+	req, err2 := http.NewRequest(http.MethodPost, "http://unix"+uri, bytes.NewReader(body))
+	if err2 != nil {
+		err = err2
+		return
+	}
+	req.Header.Set("Content-Type", "application/json; charset=utf-8")
+	resp, err = self.httpc.Do(req)
+	if err != nil {
+		return
+	}
+	DebugOut("http resp:%+v", resp)
+	if resp == nil {
+		err = errors.New("nil response.")
+	}
+	return
 }
 
 func (self *MaestroClient) get(uri string) (resp *http.Response, err error) {
@@ -218,7 +232,7 @@ func FormatJsonEasyRead(out bytes.Buffer, rawjson []byte) (outs string, err erro
 func (self *MaestroClient) SetLogging(args []string) (string, error) {
 	// the struct to send to maestro
 	var logfilter = new(maestroSpecs.LogFilter)
-	
+
 	// we need parameters
 	if len(args)-2 <= 0 {
 		return "Incorrect number of opts:", errors.New("Missing interface options")
@@ -256,7 +270,7 @@ func (self *MaestroClient) SetLogging(args []string) (string, error) {
 
 	fmt.Printf("Log Sending: %s\n", bytes)
 
-	resp, err2 := self.put("/log/target", bytes)
+	resp, err2 := self.post("/log/filter", bytes)
 
 	return resp.Status, err2
 }
