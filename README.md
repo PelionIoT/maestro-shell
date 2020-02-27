@@ -2,7 +2,6 @@
 
 An interactive shell for controlling maestro locally on deviceOS
 
-
 ### Commands
 
 #### `log delete`
@@ -222,3 +221,21 @@ Example
 > net config-interface ifname=eth1 dhcpv4enabled=false ipv4addr=192.168.1.1 ipv4mask=24 clearaddresses=true
 [OK] 200 OK
 ```
+
+
+# Developing Maestro-Shell
+
+### Compiling
+1. Since Maestro-Shell is the front end for Maestro you need to first follow all the current build instruction to build [Maestro](https://github.com/armPelionEdge/maestro/tree/dev).
+1. Once that environment is setup you need to call `vagrant ssh` to get into the build system from the `Maestro` folder.
+1. After you logged into vagrant: `cd $MAESTRO_SRC/../maestro-shell`
+1. To do the pre-build step run: `.\build-deps.sh`
+1. When that is done to build Maestro-Shell run `go build`
+1. You have built the system
+
+### Testing
+1. Open two separate `vagarant ssh` shells from the Maestro folder on your main system.
+1. In the 1st shell run `sudo maestro` to start the Maestro instance you will be sending commands to.
+1. From the send shell `cd $MAESTRO_SRC/../maestro-shell`
+1. In that folder run `sudo maestro-shell.sh`
+1. You are now ready to send commands from Maestro-Shell to Maestro
