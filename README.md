@@ -236,6 +236,6 @@ Example
 ### Testing
 1. Open two separate `vagarant ssh` shells from the Maestro folder on your main system.
 1. In the 1st shell run `sudo maestro` to start the Maestro instance you will be sending commands to.
-1. From the send shell `cd $MAESTRO_SRC/../maestro-shell`
+1. From the 2nd shell `cd $MAESTRO_SRC/../maestro-shell`
 1. In that folder run `sudo maestro-shell.sh`
 1. You are now ready to send commands from Maestro-Shell to Maestro
