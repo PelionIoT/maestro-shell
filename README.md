@@ -229,7 +229,7 @@ Example
 1. Since Maestro-Shell is the front end for Maestro you need to first follow all the current build instruction to build [Maestro](https://github.com/armPelionEdge/maestro).
 1. Once that environment is setup you need to call `vagrant ssh` to get into the build system from the `Maestro` folder.
 1. After you logged into vagrant: `cd $MAESTRO_SRC/../maestro-shell`
-1. To do the pre-build step run: `.\build-deps.sh`
+1. To do the pre-build step run: `./build-deps.sh`
 1. When that is done to build Maestro-Shell run `go build`
 1. You have built the system
 
