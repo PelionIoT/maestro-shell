@@ -84,7 +84,7 @@ var debug_on bool
 func init() {
 	errors_no_client = errors.New("Maestro could not connect.")
 	errors_not_implemented = errors.New("Not implemented yet")
-	debug_on = true
+	debug_on = false
 }
 
 func cmdGetAlive(args []string) (out string, err error) {
