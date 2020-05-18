@@ -303,12 +303,8 @@ func (self *MaestroClient) GetLogging() (out string, err error) {
 		DebugOut("resp.Body body = %+v", body)
 		DebugOut("resp.Body body = %s", string(body))
 		if err2 == nil {
-			buf.WriteString("Log Recieved:")
+			buf.WriteString("targets:")
 			out, err = FormatJsonEasyRead(buf, body)
-			//buf.WriteString("interfaces:")
-			//out, err = FormatJsonEasyRead(buf, body)
-			//			out = string()
-			//			json.Unmarshal(body, alive)
 		} else {
 			DebugOut("Error on ReadAll %s", err2.Error())
 			err = err2
