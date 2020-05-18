@@ -30,8 +30,7 @@ func ConsoleOut(format string, a ...interface{}) {
 
 // Successf prints success events to user
 func Successf(format string, a ...interface{}) string {
-	s := fmt.Sprintf(format, a...)
-	return fmt.Sprintf("[OK] %s", s)
+	return fmt.Sprintf(format, a...)
 }
 
 func SuccessOut(format string, a ...interface{}) {
