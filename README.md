@@ -167,11 +167,11 @@ Log Sending: {"Target":"/var/log/maestro/maestro.log","Levels":"info","Tag":"","
 ```
 
 #### `log set`
-Set a log filter target.
+Add a log target filter.
 
-`NOTE:` This function will not update an existing filter. You currently need to `log delete` an existing filter then call `log set` to add it back with changes.
+`NOTE:` This function will not update an existing filter. You need to `log delete` an existing filter then call `log set` to add a new filter with the desired configuration.
 
-Example
+This example adds a filter for `info` level messages which would allow the target file `/var/log/maestro/maestro.log` to start receiving `info` messages.
 ```
 > log set target=/var/log/maestro/maestro.log levels=info
 
