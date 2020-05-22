@@ -305,7 +305,7 @@ func (self *MaestroClient) SetLogging(args []string) (string, error) {
 		return "Failed to encode to JSON", err
 	}
 
-	fmt.Printf("Log Sending: %s\n", bytes)
+	DebugOut("Log Sending: %s\n", bytes)
 
 	resp, err2 := self.post("/log/filter", bytes)
 
