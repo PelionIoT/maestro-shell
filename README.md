@@ -1,31 +1,57 @@
 # maestro-shell
 
-An interactive shell for controlling maestro locally on deviceOS
+An interactive shell for controlling maestro locally on Pelion Edge.
 
-### Commands
+## Supported Operating Systems
 
-#### `log delete`
-Delete a maestro log filter.
+* Ubuntu Core 16
+* Yocto Linux
 
-Example
+## Build
+Maestro-shell is an application written in Go. To build maestro-shell, run the following commands:
+
+```bash
+./build-deps.sh
+go build -o maestro-shell main.go
 ```
-> log delete target=/var/log/maestro/maestro.log levels=info
 
-[DEBUG] opt=target, arg=/var/log/maestro/maestro.log
-[DEBUG] opt=levels, arg=info
-Log Sending: {"Target":"/var/log/maestro/maestro.log","Levels":"info","Tag":"","Pre":"","Post":"","PostFmtPreMsg":""}
-[DEBUG] http resp:&{Status:200 OK StatusCode:200 Proto:HTTP/1.1 ProtoMajor:1 ProtoMinor:1 Header:map[Content-Length:[0] Date:[Thu, 27 Feb 2020 21:10:30 GMT]] Body:{} ContentLength:0 TransferEncoding:[] Close:false Uncompressed:false Trailer:map[] Request:0xc000148300 TLS:<nil>}
-[DEBUG] log delete:200 OK <nil>
-[OK] 200 OK
+## Run
+
+## Commands
+
+### `alive`
+Check if maestro is running and show uptime.
+
+#### Examples
+
+Maestro is up and running.
 ```
+> alive
+Maestro Up. Uptime = 1041.434485848s
+```
+
+Maestro is down.  To recover, start maestro.
+```
+> alive
+[ERROR] Get http://unix/alive: dial unix /tmp/maestroapi.sock: connect: connection refused
+```
+
+Insufficient permissions to communicate with Maestro.  To recover, exit maestro-shell and restart with `sudo`.
+```
+> alive
+[ERROR] Get http://unix/alive: dial unix /tmp/maestroapi.sock: connect: permission denied
+```
+
+### `log`
+View and modify maestro log output.
 
 #### `log get`
-Get a list of the log filter targets.
+Get a list of the log output targets.
 
 Example
 ```
 > log get
-[OK] Log Recieved.
+
 [0]: {
     Format: {
         Time: ""
@@ -122,6 +148,22 @@ Example
     Name: "/var/log/maestro/maestro.log"
 }
 
+```
+
+
+#### `log delete`
+Delete a maestro log filter.
+
+Example
+```
+> log delete target=/var/log/maestro/maestro.log levels=info
+
+[DEBUG] opt=target, arg=/var/log/maestro/maestro.log
+[DEBUG] opt=levels, arg=info
+Log Sending: {"Target":"/var/log/maestro/maestro.log","Levels":"info","Tag":"","Pre":"","Post":"","PostFmtPreMsg":""}
+[DEBUG] http resp:&{Status:200 OK StatusCode:200 Proto:HTTP/1.1 ProtoMajor:1 ProtoMinor:1 Header:map[Content-Length:[0] Date:[Thu, 27 Feb 2020 21:10:30 GMT]] Body:{} ContentLength:0 TransferEncoding:[] Close:false Uncompressed:false Trailer:map[] Request:0xc000148300 TLS:<nil>}
+[DEBUG] log delete:200 OK <nil>
+[OK] 200 OK
 ```
 
 #### `log set`
