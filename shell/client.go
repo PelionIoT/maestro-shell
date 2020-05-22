@@ -155,6 +155,16 @@ func (self *MaestroClient) GetAlive() (alive *AliveResponse, err error) {
 	return
 }
 
+func FormatJson(out bytes.Buffer, rawjson []byte) (outs string, err error) {
+	err = json.Indent(&out, rawjson, "", "\t")
+	if err != nil {
+		DebugOut("Error on indent %s", err.Error())
+		return
+	}
+	outs = string(out.Bytes())
+	return
+}
+
 func FormatJsonEasyRead(out bytes.Buffer, rawjson []byte) (outs string, err error) {
 	var data interface{}
 
@@ -333,7 +343,7 @@ func (self *MaestroClient) GetLogging() (out string, err error) {
 	// format the output
 	var buf bytes.Buffer
 	buf.WriteString("Targets: ")
-	out, err = FormatJsonEasyRead(buf, body)
+	out, err = FormatJson(buf, body)
 
 	return
 }
