@@ -306,18 +306,17 @@ func (self *MaestroClient) SetLogging(args []string) (string, error) {
 func (self *MaestroClient) GetLogging() (out string, err error) {
 	resp, err := self.get("/log/target")
 	if err != nil {
-		DebugOut("Error on Get %s", err.Error())
+		ErrorOut("failed to get response: %s", err.Error())
 		return
 	}
 
 	DebugOut("resp.Body = %+v", resp.Body)
 	body, err2 := ioutil.ReadAll(resp.Body)
 	if err2 != nil {
-		DebugOut("Error on ReadAll %s", err2.Error())
+		ErrorOut("failed to read response: %s", err2.Error())
 		err = err2
 		return
 	}
-
 	DebugOut("resp.Body body = %+v", body)
 	DebugOut("resp.Body body = %s", string(body))
 
@@ -326,7 +325,7 @@ func (self *MaestroClient) GetLogging() (out string, err error) {
 	var filtered []maestroSpecs.LogTarget
 	err = json.Unmarshal(body, &unfiltered)
 	if err != nil {
-		DebugOut("Failed to unmarshal: %s", err.Error())
+		ErrorOut("failed to unmarshal response: %s", err2.Error())
 		return
 	}
 	for _, t := range unfiltered {
@@ -336,7 +335,7 @@ func (self *MaestroClient) GetLogging() (out string, err error) {
 	}
 	body, err = json.Marshal(filtered)
 	if err != nil {
-		DebugOut("Failed to marshal filtered list: %s", err.Error())
+		ErrorOut("failed to marshal filtered list: %s", err.Error())
 		return
 	}
 
