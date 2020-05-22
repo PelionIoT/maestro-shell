@@ -139,19 +139,28 @@ type AliveResponse struct {
 
 func (self *MaestroClient) GetAlive() (alive *AliveResponse, err error) {
 	resp, err := self.get("/alive")
-	if err == nil {
-		DebugOut("resp.Body = %+v", resp.Body)
-		body, err2 := ioutil.ReadAll(resp.Body)
-		DebugOut("resp.Body body = %+v", body)
-		DebugOut("resp.Body body = %s", string(body))
-		if err2 == nil {
-			alive = &AliveResponse{}
-			json.Unmarshal(body, alive)
-		} else {
-			DebugOut("Error on ReadAll %s", err2.Error())
-			err = err2
-		}
+	if err != nil {
+		ErrorOut("failed to get response: %s", err.Error())
+		return
 	}
+
+	DebugOut("resp.Body = %+v", resp.Body)
+	body, err2 := ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		ErrorOut("failed to read response: %s", err2.Error())
+		err = err2
+		return
+	}
+	DebugOut("resp.Body body = %+v", body)
+	DebugOut("resp.Body body = %s", string(body))
+
+	alive = &AliveResponse{}
+	err = json.Unmarshal(body, alive)
+	if err != nil {
+		ErrorOut("failed to unmarshal response: %s", err2.Error())
+		return
+	}
+
 	return
 }
 
