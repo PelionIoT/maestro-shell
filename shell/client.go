@@ -303,6 +303,16 @@ func (self *MaestroClient) GetLogging() (out string, err error) {
 		DebugOut("resp.Body body = %+v", body)
 		DebugOut("resp.Body body = %s", string(body))
 		if err2 == nil {
+			// remove the "default" filter
+			var resp []maestroSpecs.LogTarget
+			var filtered []maestroSpecs.LogTarget
+			json.Unmarshal(body, &resp)
+			for _, t := range resp {
+				if t.Name != "default" {
+					filtered = append(filtered, t)
+				}
+			}
+			body, err = json.Marshal(filtered)
 			buf.WriteString("targets:")
 			out, err = FormatJsonEasyRead(buf, body)
 		} else {
