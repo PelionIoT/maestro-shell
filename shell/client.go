@@ -295,31 +295,46 @@ func (self *MaestroClient) SetLogging(args []string) (string, error) {
 
 func (self *MaestroClient) GetLogging() (out string, err error) {
 	resp, err := self.get("/log/target")
+	if err != nil {
+		DebugOut("Error on Get %s", err.Error())
+		return
+	}
 
-	var buf bytes.Buffer
-	if err == nil {
-		DebugOut("resp.Body = %+v", resp.Body)
-		body, err2 := ioutil.ReadAll(resp.Body)
-		DebugOut("resp.Body body = %+v", body)
-		DebugOut("resp.Body body = %s", string(body))
-		if err2 == nil {
-			// remove the "default" filter
-			var resp []maestroSpecs.LogTarget
-			var filtered []maestroSpecs.LogTarget
-			json.Unmarshal(body, &resp)
-			for _, t := range resp {
-				if t.Name != "default" {
-					filtered = append(filtered, t)
-				}
-			}
-			body, err = json.Marshal(filtered)
-			buf.WriteString("targets:")
-			out, err = FormatJsonEasyRead(buf, body)
-		} else {
-			DebugOut("Error on ReadAll %s", err2.Error())
-			err = err2
+	DebugOut("resp.Body = %+v", resp.Body)
+	body, err2 := ioutil.ReadAll(resp.Body)
+	if err2 != nil {
+		DebugOut("Error on ReadAll %s", err2.Error())
+		err = err2
+		return
+	}
+
+	DebugOut("resp.Body body = %+v", body)
+	DebugOut("resp.Body body = %s", string(body))
+
+	// remove the "default" filter
+	var unfiltered []maestroSpecs.LogTarget
+	var filtered []maestroSpecs.LogTarget
+	err = json.Unmarshal(body, &unfiltered)
+	if err != nil {
+		DebugOut("Failed to unmarshal: %s", err.Error())
+		return
+	}
+	for _, t := range unfiltered {
+		if t.Name != "default" {
+			filtered = append(filtered, t)
 		}
 	}
+	body, err = json.Marshal(filtered)
+	if err != nil {
+		DebugOut("Failed to marshal filtered list: %s", err.Error())
+		return
+	}
+
+	// format the output
+	var buf bytes.Buffer
+	buf.WriteString("Targets: ")
+	out, err = FormatJsonEasyRead(buf, body)
+
 	return
 }
 
