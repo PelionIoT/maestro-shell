@@ -1,4 +1,4 @@
 #!/usr/bin/env groovy
-@Library('edge-ci@maestro-shell_ci') _
+@Library('edge-ci@master') _
 
 maestro_shell_ci()
