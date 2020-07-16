@@ -132,10 +132,31 @@ func cmdLog(args []string) (out string, err error) {
 				fmt.Println(out)
 			}
 		} else {
-			fmt.Printf("%s\n", Errorf("no command: net %s", args[1]))
+			fmt.Printf("%s\n", Errorf("no command: log %s", args[1]))
 		}
 	} else {
-		fmt.Printf("%s\n", Errorf("net: not enough args"))
+		fmt.Printf("%s\n", Errorf("log: not enough args"))
+	}
+	return
+}
+
+func cmdService(args []string) (out string, err error) {
+	if len(args) > 1 {
+		cmd, ok := serviceCommands[args[1]]
+		if ok {
+			out, err := cmd(args)
+			if err != nil {
+				//			DebugOut("here1")
+				fmt.Println(Errorf("%s", err.Error()))
+			} else {
+				//			DebugOut("here")
+				fmt.Println(out)
+			}
+		} else {
+			fmt.Printf("%s\n", Errorf("no command: service %s", args[1]))
+		}
+	} else {
+		fmt.Printf("%s\n", Errorf("service: not enough args"))
 	}
 	return
 }
@@ -242,6 +263,36 @@ func logDelete(args []string) (out string, err error) {
 	return
 }
 
+func getServiceStatus(args []string) (out string, err error) {
+	if defaultClient != nil {
+		res, err2 := defaultClient.GetServiceStatus(args)
+		DebugOut("service status:%+v %+v", res, err2)
+		if err2 == nil {
+			out = Successf("%v", res)
+		} else {
+			err = err2
+		}
+	} else {
+		err = errors_no_client
+	}
+	return
+}
+
+func controlService(args []string) (out string, err error) {
+	if defaultClient != nil {
+		res, err2 := defaultClient.ControlService(args)
+		DebugOut("service status:%+v %+v", res, err2)
+		if err2 == nil {
+			out = Successf("%v", res)
+		} else {
+			err = err2
+		}
+	} else {
+		err = errors_no_client
+	}
+	return
+}
+
 func netGetInterfaces(args []string) (out string, err error) {
 	if defaultClient != nil {
 		res, err2 := defaultClient.GetNetInterfaces()
@@ -301,6 +352,7 @@ var commandMap = map[string]Command{
 	"exit":  cmdExit,
 	"alive": cmdGetAlive,
 	"log":   cmdLog,
+	"service": cmdService,
 	"net":   cmdNet,
 	"jobs":  cmdJobs,
 	"debug": cmdDebug,
@@ -312,6 +364,12 @@ var logCommands = map[string]Command{
 	"set":		logSet,
 	"delete":	logDelete,
 	"help":		GetLogSubcommandsHelpString,
+}
+
+var serviceCommands = map[string]Command{
+	"status":    getServiceStatus,
+	"control":   controlService,
+	"help":      GetServiceSubcommandsHelpString,
 }
 
 var netCommands = map[string]Command{

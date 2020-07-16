@@ -39,6 +39,7 @@ var commands = []prompt.Suggest{
 	{Text: "debug", Description: "Turn on / off debug print outs"},
 	{Text: "net", Description: "Query or change network interfaces"},
 	{Text: "log", Description: "Query or change logging parameters"},
+	{Text: "service", Description: "Query status or control systemd services"},
 	{Text: "jobs", Description: "Query or change job configs"},
 	{Text: "help", Description: "Print available commands."},
 }
@@ -47,6 +48,11 @@ var logSubCommands = []prompt.Suggest{
 	{Text: "get", Description: "Show configurations for all logging targets"},
 	{Text: "set", Description: "Set configurations for a logging target"},
 	{Text: "delete", Description: "Delete a configuration for a logging target"},
+}
+
+var serviceSubCommands = []prompt.Suggest{
+	{Text: "status", Description: "get status of a systemd service (isrunning, isenabled etc.)"},
+	{Text: "control", Description: "Control systemd services (start, restart, stop, enable, disable)"},
 }
 
 var netSubcommands = []prompt.Suggest{
@@ -89,6 +95,17 @@ func GetLogSubcommandsHelpString([]string) (ret string, err error) {
 	}
 	buffer.WriteString("--\n")
 	buffer.WriteString("Specify options as <opt>=<arg>, like target=id")
+	ret = string(buffer.Bytes())
+	return
+}
+
+func GetServiceSubcommandsHelpString([]string) (ret string, err error) {
+	buffer := bytes.NewBufferString("Service Subcommands:\n")
+	for _, cmd := range serviceSubCommands {
+		buffer.WriteString(fmt.Sprintf("%-17s- %s\n", cmd.Text, cmd.Description))
+	}
+	buffer.WriteString("--\n")
+	buffer.WriteString("Specify servicename after status/control")
 	ret = string(buffer.Bytes())
 	return
 }
@@ -251,6 +268,38 @@ func argumentsCompleter(args []string) []prompt.Suggest {
 				return prompt.FilterHasPrefix(log_set_args, last, true)
 			}
 		}
+
+	case "service":
+		if len(args) == 2 {
+			return prompt.FilterHasPrefix(serviceSubCommands, second, true)
+		}
+		if len(args) == 3 {
+			third := args[2]
+			switch second {
+			case "status", "control":
+				servicename := []prompt.Suggest{
+					{Text: "servicename", Description: "Name of the service"},
+				}
+				return prompt.FilterHasPrefix(servicename, third, true)
+			}
+		}
+		if len(args) == 4 {
+			third := args[2]
+		    last := args[3]
+			switch third {
+			default:
+				operations := []prompt.Suggest{
+					{Text: "start", Description: "Start the systemd service"},
+					{Text: "stop", Description: "Stop the systemd service"},
+					{Text: "restart", Description: "Restart the systemd service"},
+					{Text: "enable", Description: "Enable the systemd service"},
+					{Text: "disable", Description: "Disable the systemd service"},
+				}
+				return prompt.FilterHasPrefix(operations, last, true)
+			}
+		}
+
+
 	case "debug":
 		if len(args) == 2 {
 			subcommands := []prompt.Suggest{

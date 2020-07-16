@@ -359,6 +359,53 @@ func (self *MaestroClient) DeleteLogging(args []string) (string, error) {
 	return resp.Status, err2
 }
 
+func (self *MaestroClient) GetServiceStatus(args []string) (out string, err error) {
+	if len(args) < 3 {
+		return "Please specify servicename", errors.New("Please specify servicename")
+	}
+
+	if len(args) > 3 {
+		return "Too many arguments", errors.New("Too many arguments")
+	}
+
+	servicename := args[2]
+	resp, err := self.get(fmt.Sprintf("/services/%s",servicename))
+
+	var buf bytes.Buffer
+	if err == nil {
+		DebugOut("resp.Body = %+v", resp.Body)
+		body, err2 := ioutil.ReadAll(resp.Body)
+		DebugOut("resp.Body body = %+v", body)
+		DebugOut("resp.Body body = %s", string(body))
+		if err2 == nil {
+			buf.WriteString("Status:")
+			out, err = FormatJsonEasyRead(buf, body)
+		} else {
+			DebugOut("Error on ReadAll %s", err2.Error())
+			err = err2
+		}
+	}
+	return
+}
+
+
+func (self *MaestroClient) ControlService(args []string) (out string, err error) {
+	if len(args) < 4 {
+		return "Please specify servicename and/or operation", errors.New("Missing servicename and operation")
+	}
+	if len(args) > 4 {
+		return "Too many arguments", errors.New("Too many arguments")
+	}
+	servicename := args[2]
+	operation := args[3]
+	resp, err2 := self.put(fmt.Sprintf("/services/%s/%s",servicename,operation), nil)
+	if resp!=nil {
+		return resp.Status, err2
+	} else {
+		return "did not get a response", err2
+	}
+}
+
 func (self *MaestroClient) ConfigNetInterface(args []string) (string, error) {
 	var netIfConfig maestroSpecs.NetIfConfigPayload
 
