@@ -222,6 +222,36 @@ Example
 [OK] 200 OK
 ```
 
+#### `service status`
+Gets the staus of a service managed by systemd.
+
+Usage: `service status <servicename>`
+
+Example
+```
+> service status myservice.service
+Status:
+{
+    Status: "active(running)"
+    IsEnabled: true
+    IsRunning: true
+}
+```
+#### `service control`
+Control service managed by systemd (start, restart, enable, disable, stop)
+
+Usage: `service control <servicename> <operation>`
+
+*operation* can be *start*, *stop*, *restart*, *enable*, *disable*
+
+Example
+```
+> service control myservice.service disable
+200 OK
+
+> service control myservice.service restart
+200 OK
+```
 
 # Developing Maestro-Shell
 
