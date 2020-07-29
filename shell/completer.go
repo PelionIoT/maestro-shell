@@ -210,6 +210,7 @@ func argumentsCompleter(args []string) []prompt.Suggest {
 				return prompt.FilterHasPrefix(dns_set_args, last, true)
 			case "config-interface":
 				iface_args := []prompt.Suggest{
+					{Text: "Type", Description: "Interface type, like wifi"},
 					{Text: "IfName", Description: "Interface name, like eth0"},
 					{Text: "DhcpV4Enabled", Description: "true or false"},
 					{Text: "IPv4Addr", Description: "IPv4 Address"},
@@ -222,6 +223,8 @@ func argumentsCompleter(args []string) []prompt.Suggest {
 					//{Text: "IEEE8021x", Description: "NOT IMPLEMENTED"},
 					{Text: "ReplaceAddress", Description: "Address to delete before setting the new address"},
 					{Text: "ClearAddresses", Description: "true or false.  if true, remove all existing addresses before setting the new address"},
+					{Text: "WifiSsid", Description: "Wifi SSID"},
+					{Text: "WifiPassword", Description: "Wifi Password"},
 					{Text: "Down", Description: "true or false.  if true, the interface is disabled"},
 					{Text: "DefaultGateway", Description: "Default route associated with this interface"},
 					//{Text: "FallbackDefaultGateway", Description: "NOT IMPLEMENTED"},
