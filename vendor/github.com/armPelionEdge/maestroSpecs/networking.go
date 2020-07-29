@@ -40,6 +40,7 @@ const (
 )
 
 type NetIfConfigPayload struct {
+	Type string `yaml:"type" json:"type" netgroup:"if"`
 	// like "eth0"
 	IfName string `yaml:"if_name" json:"if_name" netgroup:"if"`
 	// use either this or IfName, index is a non-zero positive integer
@@ -69,6 +70,12 @@ type NetIfConfigPayload struct {
 
 	// WiFi settings, if any
 	WiFiSettings *WiFiSettings `yaml:"wifi" json:"wifi" netgroup:"wifi"`
+
+	//SSID of the wifi network
+	WifiSsid string `yaml:"wifi_ssid" json:"wifi_ssid" netgroup:"wifi"`
+
+	//Wifi password
+	WifiPassword string `yaml:"wifi_password" json:"wifi_password" netgroup:"wifi"`
 
 	// IEEE8021x is the IEEE 802.1x auth settings
 	IEEE8021x *IEEE8021x `yaml:"ieee8021x" json:"ieee8021x" netgroup:"IEEE8021x"`
