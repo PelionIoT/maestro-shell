@@ -427,6 +427,8 @@ func (self *MaestroClient) ConfigNetInterface(args []string) (string, error) {
 		//TODO: netIfConfig.TestHttpsRouteOut
 		//TODO: netIfConfig.TestICMPv4EchoOut
 		switch strings.ToLower(val[0]) {
+		case "type":
+			netIfConfig.Type = val[1]
 		case "ifname":
 			netIfConfig.IfName = val[1]
 		case "ifindex":
@@ -463,6 +465,10 @@ func (self *MaestroClient) ConfigNetInterface(args []string) (string, error) {
 				return "Invalid argument", err
 			}
 			netIfConfig.ClearAddresses = b
+		case "wifissid":
+			netIfConfig.WifiSsid = val[1]
+		case "wifipassord":
+			netIfConfig.WifiPassword = val[1]
 		case "down":
 			b, err := strconv.ParseBool(val[1])
 			if err != nil {
