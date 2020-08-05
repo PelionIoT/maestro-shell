@@ -359,6 +359,72 @@ func (self *MaestroClient) DeleteLogging(args []string) (string, error) {
 	return resp.Status, err2
 }
 
+func (self *MaestroClient) AddDNS(args []string) (string, error) {
+	// the struct to send to maestro
+	var dns = new(maestroSpecs.NetworkConfigPayload)
+
+	// we need parameters
+	if len(args)-2 <= 0 {
+		return "Incorrect number of opts:", errors.New("Missing interface options")
+	}
+
+	// add the dns server
+	dns.Nameservers = append(dns.Nameservers, args[2])
+
+	bytes, err := json.Marshal(dns)
+	if err != nil {
+		return "Failed to encode to JSON", err
+	}
+
+	resp, err2 := self.post("/net/dns", bytes)
+
+	return resp.Status, err2
+}
+
+func (self *MaestroClient) GetDNS() (out string, err error) {
+
+	resp, err := self.get("/net/dns")
+
+	var buf bytes.Buffer
+	if err == nil {
+		DebugOut("resp.Body = %+v", resp.Body)
+		body, err2 := ioutil.ReadAll(resp.Body)
+		DebugOut("resp.Body body = %+v", body)
+		DebugOut("resp.Body body = %s", string(body))
+		if err2 == nil {
+			buf.WriteString("targets:")
+			out, err = FormatJsonEasyRead(buf, body)
+		} else {
+			DebugOut("Error on ReadAll %s", err2.Error())
+			err = err2
+		}
+	}
+
+	return
+}
+
+func (self *MaestroClient) DeleteDNS(args []string) (string, error) {
+	// the struct to send to maestro
+	var dns = new(maestroSpecs.NetworkConfigPayload)
+
+	// we need parameters
+	if len(args)-2 <= 0 {
+		return "Incorrect number of opts:", errors.New("Missing interface options")
+	}
+
+	// add the dns server
+	dns.Nameservers = append(dns.Nameservers, args[2])
+
+	bytes, err := json.Marshal(dns)
+	if err != nil {
+		return "Failed to encode to JSON", err
+	}
+
+	resp, err2 := self.delete("/net/dns", bytes)
+
+	return resp.Status, err2
+}
+
 func (self *MaestroClient) ConfigNetInterface(args []string) (string, error) {
 	var netIfConfig maestroSpecs.NetIfConfigPayload
 
