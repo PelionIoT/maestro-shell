@@ -59,6 +59,9 @@ var netSubcommands = []prompt.Suggest{
 	//{Text: "ifup", Description: "Bring up an interface"},
 	{Text: "events", Description: "Listen for network events [interval-seconds]"},
 	{Text: "config-interface", Description: "Enter config for an interface"},
+	{Text: "get-dns", Description: "Show all domain name servers"},
+	{Text: "add-dns", Description: "Add a new domain name server"},
+	{Text: "delete-dns", Description: "Delete an existing domain name server"},
 }
 
 func GetCommandsHelpString([]string) (ret string, err error) {
@@ -200,6 +203,11 @@ func argumentsCompleter(args []string) []prompt.Suggest {
 		if len(args) >= 3 {
 			last := args[len(args)-1]
 			switch second {
+			case "add-dns", "delete-dns":
+				dns_set_args := []prompt.Suggest{
+					{Text: "<server>", Description: "Domain name server address"},
+				}
+				return prompt.FilterHasPrefix(dns_set_args, last, true)
 			case "config-interface":
 				iface_args := []prompt.Suggest{
 					{Text: "IfName", Description: "Interface name, like eth0"},
@@ -251,6 +259,7 @@ func argumentsCompleter(args []string) []prompt.Suggest {
 				return prompt.FilterHasPrefix(log_set_args, last, true)
 			}
 		}
+
 	case "debug":
 		if len(args) == 2 {
 			subcommands := []prompt.Suggest{

@@ -242,6 +242,51 @@ func logDelete(args []string) (out string, err error) {
 	return
 }
 
+func dnsAdd(args []string) (out string, err error) {
+	if defaultClient != nil {
+		res, err2 := defaultClient.AddDNS(args)
+		DebugOut("dns add:%+v %+v", res, err2)
+		if err2 == nil {
+			out = Successf("%v", res)
+		} else {
+			err = err2
+		}
+	} else {
+		err = errors_no_client
+	}
+	return
+}
+
+func dnsGet(args []string) (out string, err error) {
+	if defaultClient != nil {
+		res, err2 := defaultClient.GetDNS()
+		DebugOut("dns get:%+v %+v", res, err2)
+		if err2 == nil {
+			out = Successf("%v", res)
+		} else {
+			err = err2
+		}
+	} else {
+		err = errors_no_client
+	}
+	return
+}
+
+func dnsDelete(args []string) (out string, err error) {
+	if defaultClient != nil {
+		res, err2 := defaultClient.DeleteDNS(args)
+		DebugOut("dns delete:%+v %+v", res, err2)
+		if err2 == nil {
+			out = Successf("%v", res)
+		} else {
+			err = err2
+		}
+	} else {
+		err = errors_no_client
+	}
+	return
+}
+
 func netGetInterfaces(args []string) (out string, err error) {
 	if defaultClient != nil {
 		res, err2 := defaultClient.GetNetInterfaces()
@@ -308,16 +353,19 @@ var commandMap = map[string]Command{
 }
 
 var logCommands = map[string]Command{
-	"get":		logGet,
-	"set":		logSet,
-	"delete":	logDelete,
-	"help":		GetLogSubcommandsHelpString,
+	"get":    logGet,
+	"set":    logSet,
+	"delete": logDelete,
+	"help":   GetLogSubcommandsHelpString,
 }
 
 var netCommands = map[string]Command{
 	"get-interfaces":   netGetInterfaces,
 	"events":           netEvents,
 	"config-interface": netConfigInterface,
+	"get-dns":          dnsGet,
+	"add-dns":          dnsAdd,
+	"delete-dns":       dnsDelete,
 	"help":             GetNetSubcommandsHelpString,
 }
 
