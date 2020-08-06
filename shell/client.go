@@ -392,7 +392,7 @@ func (self *MaestroClient) GetDNS() (out string, err error) {
 		DebugOut("resp.Body body = %+v", body)
 		DebugOut("resp.Body body = %s", string(body))
 		if err2 == nil {
-			buf.WriteString("targets:")
+			buf.WriteString("nameservers:")
 			out, err = FormatJsonEasyRead(buf, body)
 		} else {
 			DebugOut("Error on ReadAll %s", err2.Error())
