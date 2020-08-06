@@ -222,6 +222,41 @@ Example
 [OK] 200 OK
 ```
 
+#### `net add-dns`
+Add a DNS server to your gateway.
+
+Usage: `net add-dns <dns-ip>`
+
+Example
+```
+> net add-dns 8.8.8.8
+[OK] 200 OK
+```
+
+#### `net delete-dns`
+Delete a DNS server from your gateway.
+
+Usage: `net delete-dns <dns-ip>`
+
+Example
+```
+> net delete-dns 8.8.8.4
+[OK] 200 OK
+```
+
+#### `net get-dns`
+Get the DNS servers used by your gateway for name resolution.
+
+Usage: `net get-dns`
+
+Example
+```
+> net get-dns
+targets:
+[0]: "8.8.8.8"[1]: "8.8.8.4"
+
+```
+
 
 # Developing Maestro-Shell
 
