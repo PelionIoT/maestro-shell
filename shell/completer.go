@@ -234,6 +234,9 @@ func argumentsCompleter(args []string) []prompt.Suggest {
 					{Text: "DhcpDisableClearAddresses", Description: "Don't allow DHCP to clear all addresses"},
 					{Text: "DhcpStepTimeout", Description: "Max seconds to wait for DHCP address"},
 					{Text: "Existing", Description: "override=replace any data in the db, replace=remove any data in the db"},
+					{Text: "Type", Description: "Type of the connection, such as wifi or lte"},
+					{Text: "SerialDevice", Description: "Path to the LTE modem serial device"},
+					{Text: "APN", Description: "LTE modem access point name"},
 				}
 				return prompt.FilterHasPrefix(iface_args, last, true)
 			}
