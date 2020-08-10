@@ -216,9 +216,15 @@ Configures a single existing managed interface.
 
 Usage: `net config-interface <opt1>=<arg1> <opt2>=<arg2> ...`
 
-Example
+Example 1
 ```
 > net config-interface ifname=eth1 dhcpv4enabled=false ipv4addr=192.168.1.1 ipv4mask=24 clearaddresses=true
+[OK] 200 OK
+```
+
+Example 2
+```
+> net config-interface ifname=wwan0 type=lte dhcpv4enabled=true apn=stream.co.uk serial=/dev/ttyACM3
 [OK] 200 OK
 ```
 
@@ -256,7 +262,6 @@ targets:
 [0]: "8.8.8.8"[1]: "8.8.8.4"
 
 ```
-
 
 # Developing Maestro-Shell
 
