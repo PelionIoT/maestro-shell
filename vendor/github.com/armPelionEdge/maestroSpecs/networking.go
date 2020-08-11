@@ -163,11 +163,11 @@ type NetworkConfigPayload struct {
 	// an array of network interfaces to configure
 	Interfaces []*NetIfConfigPayload `yaml:"interfaces" json:"interfaces" netgroup:"if"`
 
-	// DontOverrideDefaultRoute when true means maestro will not
-	// replace the default route, if one exists, with a setting from the interface
-	// whether via DHCP or static. If a route is not in place, or the route was set by
-	// maestro, it will replace this route.
-	DontOverrideDefaultRoute bool `yaml:"dont_override_default_route" json:"dont_override_default_route" netgroup:"route"`
+	// DontSetDefaultRoute when true means maestro will not
+	// add/replace/delete the default route in the system routing table, if one exists, with a setting from the interface
+	// whether via DHCP or static (DefaultGateway field). In case, a default route is not set for the system and this flag is true,
+	// the default route must be set manually or by Network Manager.
+	DontSetDefaultRoute bool `yaml:"dont_set_default_route" json:"dont_set_default_route" netgroup:"route"`
 
 	Nameservers []string `yaml:"nameservers" json:"nameservers" netgroup:"nameserver"`
 
