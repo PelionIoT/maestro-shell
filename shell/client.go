@@ -486,7 +486,7 @@ func (self *MaestroClient) ConfigNetInterface(args []string) (string, error) {
 			netIfConfig.ClearAddresses = b
 		case "wifissid":
 			netIfConfig.WifiSsid = val[1]
-		case "wifipassord":
+		case "wifipassword":
 			netIfConfig.WifiPassword = val[1]
 		case "down":
 			b, err := strconv.ParseBool(val[1])
