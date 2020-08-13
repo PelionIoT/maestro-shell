@@ -228,6 +228,12 @@ Example 2
 [OK] 200 OK
 ```
 
+Example 3
+```
+> net config-interface ifname=wlan0 type=wifi dhcpv4enabled=true clearaddresses=true wifissid=ssid wifipassord=password
+[OK] 200 OK
+```
+
 #### `net add-dns`
 Add a DNS server to your gateway.
 
