@@ -230,7 +230,7 @@ Example 2
 
 Example 3
 ```
-> net config-interface ifname=wlan0 type=wifi dhcpv4enabled=true clearaddresses=true wifissid=ssid wifipassord=password
+> net config-interface ifname=wlan0 type=wifi dhcpv4enabled=true clearaddresses=true wifissid=ssid wifipassword=password
 [OK] 200 OK
 ```
 
