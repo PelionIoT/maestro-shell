@@ -440,7 +440,6 @@ func (self *MaestroClient) ConfigNetInterface(args []string) (string, error) {
 		}
 		DebugOut("opt=%s, arg=%s", val[0], val[1])
 		//TODO: netIfConfig.AliasAddrV4
-		//TODO: netIfConfig.WiFiSettings
 		//TODO: netIfConfig.IEEE8021x
 		//TODO: netIfConfig.Routes
 		//TODO: netIfConfig.TestHttpsRouteOut

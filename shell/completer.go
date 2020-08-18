@@ -219,7 +219,6 @@ func argumentsCompleter(args []string) []prompt.Suggest {
 					//{Text: "AliasAddrV4", Description: "NOT IMPLEMENTED"},
 					{Text: "IPv6Addr", Description: "IPv6 Address"},
 					{Text: "HwAddr", Description: "MAC Address or similar"},
-					//{Text: "WiFiSettings", Description: "NOT IMPLEMENTED"},
 					//{Text: "IEEE8021x", Description: "NOT IMPLEMENTED"},
 					{Text: "ReplaceAddress", Description: "Address to delete before setting the new address"},
 					{Text: "ClearAddresses", Description: "true or false.  if true, remove all existing addresses before setting the new address"},
