@@ -17,9 +17,6 @@ package maestroSpecs
 
 //    "encoding/json"
 
-type WiFiSettings struct {
-	// TBD
-}
 
 type IEEE8021x struct {
 	// TBD
@@ -68,9 +65,6 @@ type NetIfConfigPayload struct {
 	// 48 or 64 bit addresses can be stated, or whatever may be supported by the hardware
 	// such as a 20-octet IP for InifiniBand
 	HwAddr string `yaml:"hw_addr" json:"hw_addr" netgroup:"mac"`
-
-	// WiFi settings, if any
-	WiFiSettings *WiFiSettings `yaml:"wifi" json:"wifi" netgroup:"wifi"`
 
 	//SSID of the wifi network
 	WifiSsid string `yaml:"wifi_ssid" json:"wifi_ssid" netgroup:"wifi"`
