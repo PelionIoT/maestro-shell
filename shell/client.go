@@ -525,8 +525,6 @@ func (self *MaestroClient) ConfigNetInterface(args []string) (string, error) {
 			netIfConfig.DhcpStepTimeout = i
 		case "existing":
 			netIfConfig.Existing = val[1]
-		case "type":
-			netIfConfig.Type = val[1]
 		case "serialdevice":
 			netIfConfig.SerialDevice = val[1]
 		case "apn":
