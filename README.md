@@ -1,5 +1,7 @@
 # maestro-shell
 
+BUILD TEST: DO NOT MERGE
+
 An interactive shell for controlling maestro locally on deviceOS
 
 ### Commands
