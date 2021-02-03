@@ -150,6 +150,9 @@ func (a *ConfigAnalyzer) DiffChanges(current interface{}, future interface{}) (i
 			//			currValue = reflect.NewAt(currType, unsafe.Pointer(reflect.ValueOf(cur).UnsafeAddr())).Elem()
 			//			currValue = reflect.NewAt(currType, unsafe.Pointer(&cur)).Elem()
 			currValue = reflect.ValueOf(cur)
+		} else {
+			errinner = fmt.Errorf("invalid kind: expected Struct or Ptr")
+			return
 		}
 
 		kind = currValue.Kind()
@@ -218,6 +221,10 @@ func (a *ConfigAnalyzer) DiffChanges(current interface{}, future interface{}) (i
 				continue
 			}
 			if k == reflect.Struct {
+				// if the field isn't exported then skip it
+				if !fieldval.Addr().CanInterface() {
+					continue
+				}
 				// it is crtical to pass in as an Interface which is an Address
 				e := compareStruct(pre+field.Name, fieldval.Addr().Interface(), futval.Addr().Interface(), index)
 				if e != nil {
