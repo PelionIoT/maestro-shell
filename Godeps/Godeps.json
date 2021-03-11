@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/armPelionEdge/maestro-shell",
+	"ImportPath": "github.com/PelionIoT/maestro-shell",
 	"GoVersion": "go1.11",
 	"GodepVersion": "v80",
 	"Packages": [
@@ -7,15 +7,15 @@
 	],
 	"Deps": [
 		{
-			"ImportPath": "github.com/armPelionEdge/maestroSpecs",
+			"ImportPath": "github.com/PelionIoT/maestroSpecs",
 			"Rev": "f7044471ed9ebab46e90f7c59112ef3630543d9f"
 		},
 		{
-			"ImportPath": "github.com/armPelionEdge/maestroSpecs/templates",
+			"ImportPath": "github.com/PelionIoT/maestroSpecs/templates",
 			"Rev": "f7044471ed9ebab46e90f7c59112ef3630543d9f"
 		},
 		{
-			"ImportPath": "github.com/armPelionEdge/mustache",
+			"ImportPath": "github.com/PelionIoT/mustache",
 			"Comment": "0.0.1-17-g6375acf",
 			"Rev": "6375acf62c69d9d3ad20fd0599d82ca94ea12284"
 		},
@@ -43,7 +43,7 @@
 			"Rev": "b1f72af2d63057363398bec5873d16a98b453312"
 		},
 		{
-			"ImportPath": "github.com/armPelionEdge/greasego",
+			"ImportPath": "github.com/PelionIoT/greasego",
 			"Rev": "5b578dd9578b693c0938392a8cb4efbe76ec3918"
 		},
 		{
@@ -51,7 +51,7 @@
 			"Rev": "6f686a352de66814cdd080d970febae7767857a3"
 		},
 		{
-			"ImportPath": "github.com/armPelionEdge/greasego",
+			"ImportPath": "github.com/PelionIoT/greasego",
 			"Rev": "5b578dd9578b693c0938392a8cb4efbe76ec3918"
 		}
 	]
