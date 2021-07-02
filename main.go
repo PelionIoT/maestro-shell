@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"os"
 
-	. "github.com/armPelionEdge/maestro-shell/shell"
+	. "github.com/PelionIoT/maestro-shell/shell"
 	"github.com/c-bata/go-prompt"
 )
 

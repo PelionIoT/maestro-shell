@@ -28,7 +28,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/armPelionEdge/maestroSpecs"
+	"github.com/PelionIoT/maestroSpecs"
 )
 
 type MaestroClient struct {
