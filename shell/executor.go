@@ -119,27 +119,6 @@ func cmdDebug(args []string) (out string, err error) {
 	return
 }
 
-func cmdLog(args []string) (out string, err error) {
-	if len(args) > 1 {
-		cmd, ok := logCommands[args[1]]
-		if ok {
-			out, err := cmd(args)
-			if err != nil {
-				//			DebugOut("here1")
-				fmt.Println(Errorf("%s", err.Error()))
-			} else {
-				//			DebugOut("here")
-				fmt.Println(out)
-			}
-		} else {
-			fmt.Printf("%s\n", Errorf("no command: net %s", args[1]))
-		}
-	} else {
-		fmt.Printf("%s\n", Errorf("net: not enough args"))
-	}
-	return
-}
-
 func cmdNet(args []string) (out string, err error) {
 	if len(args) > 1 {
 		cmd, ok := netCommands[args[1]]
@@ -186,51 +165,6 @@ func netConfigInterface(args []string) (out string, err error) {
 	if defaultClient != nil {
 		res, err2 := defaultClient.ConfigNetInterface(args)
 		DebugOut("net ConfigInterface:%+v %+v", res, err2)
-		if err2 == nil {
-			out = Successf("%v", res)
-		} else {
-			err = err2
-		}
-	} else {
-		err = errors_no_client
-	}
-	return
-}
-
-func logSet(args []string) (out string, err error) {
-	if defaultClient != nil {
-		res, err2 := defaultClient.SetLogging(args)
-		DebugOut("log set:%+v %+v", res, err2)
-		if err2 == nil {
-			out = Successf("%v", res)
-		} else {
-			err = err2
-		}
-	} else {
-		err = errors_no_client
-	}
-	return
-}
-
-func logGet(args []string) (out string, err error) {
-	if defaultClient != nil {
-		res, err2 := defaultClient.GetLogging()
-		DebugOut("logging:%+v %+v", res, err2)
-		if err2 == nil {
-			out = Successf("%v", res)
-		} else {
-			err = err2
-		}
-	} else {
-		err = errors_no_client
-	}
-	return
-}
-
-func logDelete(args []string) (out string, err error) {
-	if defaultClient != nil {
-		res, err2 := defaultClient.DeleteLogging(args)
-		DebugOut("log delete:%+v %+v", res, err2)
 		if err2 == nil {
 			out = Successf("%v", res)
 		} else {
@@ -345,18 +279,10 @@ func notImplemented(args []string) (out string, err error) {
 var commandMap = map[string]Command{
 	"exit":  cmdExit,
 	"alive": cmdGetAlive,
-	"log":   cmdLog,
 	"net":   cmdNet,
 	"jobs":  cmdJobs,
 	"debug": cmdDebug,
 	"help":  GetCommandsHelpString,
-}
-
-var logCommands = map[string]Command{
-	"get":    logGet,
-	"set":    logSet,
-	"delete": logDelete,
-	"help":   GetLogSubcommandsHelpString,
 }
 
 var netCommands = map[string]Command{
